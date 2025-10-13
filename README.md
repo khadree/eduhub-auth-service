@@ -72,6 +72,23 @@ npm start
 
 The service listens on the port configured via `PORT` (defaults to `4000`).
 
+#### Docker
+
+```bash
+# build the image
+docker build -t eduhub-auth-service .
+
+# run the container
+docker run --rm -p 4000:4000 \
+  -e NODE_ENV=production \
+  -e DATABASE_URL=postgres://... \
+  -e REDIS_URL=redis://... \
+  eduhub-auth-service
+```
+
+The container exposes port `4000` and expects environment variables for PostgreSQL, Redis, JWT secrets, and SMTP credentials. Provide these via `-e` flags or Kubernetes secrets when deploying.
+
+
 ### 5. API Overview
 
 | Method | Endpoint | Description |
