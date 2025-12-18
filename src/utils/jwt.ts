@@ -5,6 +5,7 @@ import { env } from '../config/env';
 interface AccessTokenPayload {
   sub: string;
   role: string;
+  email: string;
   type: 'access';
 }
 
@@ -14,8 +15,8 @@ interface RefreshTokenPayload {
   type: 'refresh';
 }
 
-export const signAccessToken = (userId: string, role: string) =>
-  jwt.sign({ sub: userId, role, type: 'access' } satisfies AccessTokenPayload, env.jwt.accessSecret, {
+export const signAccessToken = (userId: string, role: string, email: string) =>
+  jwt.sign({ sub: userId, role, email, type: 'access' } satisfies AccessTokenPayload, env.jwt.accessSecret, {
     expiresIn: env.jwt.accessExpiresIn,
   });
 

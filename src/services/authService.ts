@@ -18,7 +18,7 @@ interface AuthTokens {
   expiresIn: string;
 }
 
-const DEFAULT_REFRESH_TTL_SECONDS = 60 * 60 * 24 * 7; // 7 days
+const DEFAULT_REFRESH_TTL_SECONDS = 60 * 60 * 24 * 7; 
 const REFRESH_TTL_SECONDS = parseDurationToSeconds(
   env.jwt.refreshExpiresIn,
   DEFAULT_REFRESH_TTL_SECONDS,
@@ -27,7 +27,7 @@ const ALLOWED_ROLES: UserRole[] = ['student', 'teacher', 'admin'];
 
 const buildTokens = async (user: User): Promise<AuthTokens> => {
   const refreshTokenId = uuid();
-  const accessToken = signAccessToken(user.id, user.role);
+  const accessToken = signAccessToken(user.id, user.role, user.email);
   const refreshToken = signRefreshToken(user.id, refreshTokenId);
 
   await userRepository.saveRefreshToken(user.id, refreshTokenId, new Date(Date.now() + REFRESH_TTL_SECONDS * 1000));

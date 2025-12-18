@@ -7,6 +7,7 @@ export interface AuthenticatedRequest extends Request {
   user?: {
     id: string;
     role: string;
+    email: string;
   };
 }
 
@@ -21,7 +22,7 @@ export const authenticate = (requiredRoles?: string[]) =>
 
     try {
       const payload = verifyAccessToken(token);
-      req.user = { id: payload.sub, role: payload.role };
+      req.user = { id: payload.sub, role: payload.role, email: payload.email };
 
       if (requiredRoles && requiredRoles.length > 0 && !requiredRoles.includes(payload.role)) {
         return next(new createHttpError.Forbidden('Insufficient permissions'));

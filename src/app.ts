@@ -1,15 +1,16 @@
 import 'express-async-errors';
 import express from 'express';
 import cookieParser from 'cookie-parser';
-
 import { authRoutes } from './routes/authRoutes';
 import { errorHandler } from './middleware/errorHandler';
+import cors from 'cors';
 
 export const createApp = () => {
   const app = express();
-
+  app.use(cors());
   app.use(express.json());
   app.use(cookieParser());
+
 
   app.get('/healthz', (_req, res) => {
     res.json({ status: 'ok' });

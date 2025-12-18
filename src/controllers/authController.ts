@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import createHttpError from 'http-errors';
-
 import { authService } from '../services/authService';
 import { env } from '../config/env';
 import { AuthenticatedRequest } from '../middleware/authenticate';
@@ -79,6 +78,7 @@ export const getProfile = async (req: AuthenticatedRequest, res: Response) => {
   res.json({
     id: req.user.id,
     role: req.user.role,
+    email: req.user.email,
   });
 };
 
