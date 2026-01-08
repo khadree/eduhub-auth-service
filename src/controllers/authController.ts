@@ -3,6 +3,10 @@ import createHttpError from 'http-errors';
 import { authService } from '../services/authService';
 import { env } from '../config/env';
 import { AuthenticatedRequest } from '../middleware/authenticate';
+import { CatalogClient } from '../services/catalog';
+
+
+const catalogClient = new CatalogClient();
 
 export const register = async (req: Request, res: Response) => {
   const { email, password, role } = req.body as {
@@ -13,6 +17,29 @@ export const register = async (req: Request, res: Response) => {
 
   if (!email || !password) {
     throw new createHttpError.BadRequest('Email and password are required');
+  }
+  if (role === 'teacher' || role === 'student') {
+    try {
+      let hasProfile: boolean;
+      hasProfile = await catalogClient.checkProfileExists(role, email);
+      
+      if (!hasProfile) {
+        throw new createHttpError.Forbidden(
+          `No ${role} profile found. Please contact administrator to create your profile first.`
+        );
+      }
+    } catch (error) {
+      if (error instanceof createHttpError.ServiceUnavailable) {
+        throw error;
+      }
+      if (error instanceof createHttpError.Forbidden) {
+        throw error;
+      }
+      console.error(`Error checking ${role} profile:`, error);
+      throw new createHttpError.InternalServerError(
+        'Profile verification failed'
+      );
+    }
   }
 
   const tokens = await authService.register(email, password, role);

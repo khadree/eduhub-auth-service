@@ -129,7 +129,7 @@ export const authService = {
 
     await userRepository.setPasswordResetToken(user.id, token, expiresAt);
 
-    const resetUrl = `${env.appUrl}/reset-password?token=${token}`;
+    const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
     await sendPasswordResetEmail({ email: user.email, resetToken: token, resetUrl });
   },
 
