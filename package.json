@@ -7,7 +7,7 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-    "lint": "eslint 'src/**/*.{ts,tsx}'",
+    "lint": "eslint .", 
     "format": "prettier --write 'src/**/*.{ts,tsx,json}'"
   },
   "keywords": [
@@ -45,13 +45,15 @@
     "@types/uuid": "^10.0.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-import": "^2.29.1",
+    "eslint-import-resolver-typescript": "^4.4.5",
+    "eslint-plugin-import": "^2.32.0",
     "prettier": "^3.3.2",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^8.62.1"
   },
   "overrides": {
-  "picomatch": "^4.0.4"
-}
+    "picomatch": "^4.0.4"
+  }
 }
