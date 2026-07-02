@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken';
-
 import { env } from '../config/env';
 
 interface AccessTokenPayload {
@@ -16,14 +15,22 @@ interface RefreshTokenPayload {
 }
 
 export const signAccessToken = (userId: string, role: string, email: string) =>
-  jwt.sign({ sub: userId, role, email, type: 'access' } satisfies AccessTokenPayload, env.jwt.accessSecret, {
-    expiresIn: env.jwt.accessExpiresIn,
-  });
+  jwt.sign(
+    { sub: userId, role, email, type: 'access' } satisfies AccessTokenPayload, 
+    env.jwt.accessSecret as jwt.Secret, // Cast string signature to a strict Secret
+    {
+      expiresIn: env.jwt.accessExpiresIn,
+    } as jwt.SignOptions // Forces compiler to choose the configuration block overload
+  );
 
 export const signRefreshToken = (userId: string, jti: string) =>
-  jwt.sign({ sub: userId, jti, type: 'refresh' } satisfies RefreshTokenPayload, env.jwt.refreshSecret, {
-    expiresIn: env.jwt.refreshExpiresIn,
-  });
+  jwt.sign(
+    { sub: userId, jti, type: 'refresh' } satisfies RefreshTokenPayload, 
+    env.jwt.refreshSecret as jwt.Secret, // Cast string signature to a strict Secret
+    {
+      expiresIn: env.jwt.refreshExpiresIn,
+    } as jwt.SignOptions // Forces compiler to choose the configuration block overload
+  );
 
 export const verifyAccessToken = (token: string) =>
   jwt.verify(token, env.jwt.accessSecret) as AccessTokenPayload & jwt.JwtPayload;
