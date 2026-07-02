@@ -27,7 +27,7 @@
 
 # syntax=docker/dockerfile:1.6
 
-ARG NODE_VERSION=20.18.1
+ARG NODE_VERSION=20.19.6 
 
 FROM node:${NODE_VERSION}-bookworm AS base
 ENV NODE_ENV=production
